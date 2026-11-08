@@ -4,7 +4,9 @@ import { MeetingDetail } from "@/components/MeetingDetail";
 import type { SacramentMeeting } from "@/lib/types";
 
 async function getMeeting(id: string): Promise<SacramentMeeting> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const response = await fetch(new URL(`/api/meetings/${id}`, baseUrl), {
     cache: "no-store",
   });
