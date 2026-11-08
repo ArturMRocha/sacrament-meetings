@@ -9,6 +9,7 @@ function formatDate(date: string): string {
     weekday: "long",
     month: "long",
     day: "numeric",
+    timeZone: "UTC",
     year: "numeric",
   }).format(new Date(`${date}T00:00:00Z`));
 }
