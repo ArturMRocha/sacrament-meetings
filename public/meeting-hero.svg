@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">Ward meeting illustration</title>
+  <desc id="desc">A simple illustration of a church meeting with a podium and a warm sunrise.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ecfeff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f0fdf4"/>
+      <stop offset="100%" stop-color="#dcfce7"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="820" fill="url(#sky)"/>
+  <circle cx="1080" cy="140" r="88" fill="#fde68a" opacity="0.9"/>
+  <path d="M0 560 C 220 500, 420 660, 720 550 S 1180 480, 1280 560 L1280 820 L0 820 Z" fill="#dbeafe"/>
+  <rect x="170" y="220" width="940" height="420" rx="30" fill="url(#panel)" opacity="0.92"/>
+  <rect x="500" y="290" width="280" height="220" rx="18" fill="#ffffff"/>
+  <rect x="540" y="320" width="200" height="22" rx="11" fill="#d1fae5"/>
+  <rect x="540" y="360" width="160" height="18" rx="9" fill="#dbeafe"/>
+  <rect x="540" y="396" width="180" height="18" rx="9" fill="#dbeafe"/>
+  <circle cx="380" cy="420" r="72" fill="#10b981" opacity="0.18"/>
+  <rect x="250" y="455" width="220" height="140" rx="24" fill="#bbf7d0"/>
+  <rect x="790" y="455" width="220" height="140" rx="24" fill="#bfdbfe"/>
+  <path d="M245 500 L 460 500" stroke="#166534" stroke-width="10" stroke-linecap="round"/>
+  <path d="M760 500 L 1010 500" stroke="#1d4ed8" stroke-width="10" stroke-linecap="round"/>
+  <text x="640" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="#0f172a">Sacrament Meeting</text>
+</svg>
