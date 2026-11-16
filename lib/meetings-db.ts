@@ -86,18 +86,22 @@ export async function getMeetingById(
 }
 
 export async function addMeeting(
-  _data: Omit<SacramentMeeting, "id">,
+  data: Omit<SacramentMeeting, "id">,
 ): Promise<SacramentMeeting> {
+  void data;
   throw new Error("addMeeting: database implementation coming in Week 04");
 }
 
 export async function updateMeeting(
-  _id: number,
-  _updates: Partial<SacramentMeeting>,
+  id: number,
+  updates: Partial<SacramentMeeting>,
 ): Promise<SacramentMeeting | null> {
+  void id;
+  void updates;
   throw new Error("updateMeeting: database implementation coming in Week 04");
 }
 
-export async function deleteMeeting(_id: number): Promise<boolean> {
+export async function deleteMeeting(id: number): Promise<boolean> {
+  void id;
   throw new Error("deleteMeeting: database implementation coming in Week 04");
 }
