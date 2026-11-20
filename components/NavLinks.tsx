@@ -27,9 +27,9 @@ export function NavLinks() {
             key={item.href}
             href={item.href}
             className={[
-              "rounded-full border px-3 py-2 transition-colors",
+              "rounded-full border px-3 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2",
               isActive
-                ? "border-emerald-600 bg-emerald-600 text-white"
+                ? "border-emerald-700 bg-emerald-700 text-white"
                 : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-100",
             ].join(" ")}
             aria-current={isActive ? "page" : undefined}
