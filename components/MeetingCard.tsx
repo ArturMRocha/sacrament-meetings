@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { deleteMeeting } from "@/lib/actions";
 import type { SacramentMeeting } from "@/lib/types";
 
 type MeetingCardProps = {
@@ -33,16 +34,34 @@ export function MeetingCard({ meeting }: MeetingCardProps) {
         Opening hymn: {meeting.openingHymn.number} — {meeting.openingHymn.title}
       </p>
 
-      <div className="mt-4 flex items-center justify-between border-t border-slate-200 pt-4">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-4">
         <span className="text-sm text-slate-500">
           {meeting.speakers.length} speaker{meeting.speakers.length === 1 ? "" : "s"}
         </span>
-        <Link
-          href={`/meetings/${meeting.id}`}
-          className="inline-flex items-center rounded-full bg-slate-900 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700"
-        >
-          View agenda
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href={`/meetings/${meeting.id}`}
+            className="inline-flex items-center rounded-full bg-slate-900 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2"
+          >
+            View agenda
+          </Link>
+          <Link
+            href={`/meetings/${meeting.id}/edit`}
+            className="inline-flex items-center rounded-full border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+          >
+            Edit
+          </Link>
+          <form action={deleteMeeting}>
+            <input type="hidden" name="meetingId" value={meeting.id} />
+            <button
+              type="submit"
+              aria-label={`Delete meeting on ${formatDate(meeting.date)}`}
+              className="inline-flex items-center rounded-full border border-red-300 px-3 py-2 text-sm font-medium text-red-800 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
+            >
+              Delete
+            </button>
+          </form>
+        </div>
       </div>
     </article>
   );
