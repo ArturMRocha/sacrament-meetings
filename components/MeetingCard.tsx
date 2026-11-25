@@ -5,6 +5,7 @@ import type { SacramentMeeting } from "@/lib/types";
 
 type MeetingCardProps = {
   meeting: SacramentMeeting;
+  canManage?: boolean;
 };
 
 function formatDate(date: string): string {
@@ -16,7 +17,7 @@ function formatDate(date: string): string {
   }).format(new Date(`${date}T00:00:00Z`));
 }
 
-export function MeetingCard({ meeting }: MeetingCardProps) {
+export function MeetingCard({ meeting, canManage = false }: MeetingCardProps) {
   return (
     <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
       <div className="mb-3 flex items-center justify-between gap-3">
@@ -45,22 +46,26 @@ export function MeetingCard({ meeting }: MeetingCardProps) {
           >
             View agenda
           </Link>
-          <Link
-            href={`/meetings/${meeting.id}/edit`}
-            className="inline-flex items-center rounded-full border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
-          >
-            Edit
-          </Link>
-          <form action={deleteMeeting}>
-            <input type="hidden" name="meetingId" value={meeting.id} />
-            <button
-              type="submit"
-              aria-label={`Delete meeting on ${formatDate(meeting.date)}`}
-              className="inline-flex items-center rounded-full border border-red-300 px-3 py-2 text-sm font-medium text-red-800 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
-            >
-              Delete
-            </button>
-          </form>
+          {canManage ? (
+            <>
+              <Link
+                href={`/meetings/${meeting.id}/edit`}
+                className="inline-flex items-center rounded-full border border-slate-300 px-3 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+              >
+                Edit
+              </Link>
+              <form action={deleteMeeting}>
+                <input type="hidden" name="meetingId" value={meeting.id} />
+                <button
+                  type="submit"
+                  aria-label={`Delete meeting on ${formatDate(meeting.date)}`}
+                  className="inline-flex items-center rounded-full border border-red-300 px-3 py-2 text-sm font-medium text-red-800 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
+                >
+                  Delete
+                </button>
+              </form>
+            </>
+          ) : null}
         </div>
       </div>
     </article>

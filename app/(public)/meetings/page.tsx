@@ -1,14 +1,24 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Suspense } from "react";
+
 import { MeetingCard } from "@/components/MeetingCard";
 import { MeetingSearch } from "@/components/MeetingSearch";
 import { Pagination } from "@/components/Pagination";
+import { isAuthenticated } from "@/lib/auth";
 import { getMeetings, getMeetingsTotalPages } from "@/lib/meetings-db";
-import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Meetings",
+  description:
+    "Browse upcoming sacrament meeting schedules, agendas, and details.",
+};
 
 type SearchParams = Promise<{
   [key: string]: string | string[] | undefined;
 }>;
 
-export default async function MeetingsPage({
+async function MeetingsContent({
   searchParams,
 }: {
   searchParams: SearchParams;
@@ -24,13 +34,14 @@ export default async function MeetingsPage({
     ? Math.floor(requestedPage)
     : 1;
 
-  const [meetings, totalPages] = await Promise.all([
+  const [meetings, totalPages, canManage] = await Promise.all([
     getMeetings(query, currentPage),
     getMeetingsTotalPages(query),
+    isAuthenticated(),
   ]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+    <>
       <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Upcoming meetings</p>
@@ -38,12 +49,14 @@ export default async function MeetingsPage({
         </div>
         <div className="flex flex-col gap-3 sm:flex-row">
           <MeetingSearch />
-          <Link
-            href="/meetings/new"
-            className="inline-flex items-center justify-center rounded-xl bg-emerald-700 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
-          >
-            Create meeting
-          </Link>
+          {canManage ? (
+            <Link
+              href="/meetings/new"
+              className="inline-flex items-center justify-center rounded-xl bg-emerald-700 px-4 py-3 text-sm font-semibold text-white hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2"
+            >
+              Create meeting
+            </Link>
+          ) : null}
         </div>
       </div>
 
@@ -58,7 +71,7 @@ export default async function MeetingsPage({
       {meetings.length > 0 ? (
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {meetings.map((meeting) => (
-            <MeetingCard key={meeting.id} meeting={meeting} />
+            <MeetingCard key={meeting.id} meeting={meeting} canManage={canManage} />
           ))}
         </div>
       ) : (
@@ -68,6 +81,20 @@ export default async function MeetingsPage({
       )}
 
       <Pagination totalPages={totalPages} />
+    </>
+  );
+}
+
+export default function MeetingsPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <Suspense fallback={<p className="py-10 text-center text-slate-600">Loading meetings...</p>}>
+        <MeetingsContent searchParams={searchParams} />
+      </Suspense>
     </div>
   );
 }
