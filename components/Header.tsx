@@ -1,21 +1,19 @@
-"use client";
-
 import Link from "next/link";
-import { useMemo } from "react";
+import { connection } from "next/server";
 
 import { NavLinks } from "@/components/NavLinks";
+import { getSession } from "@/lib/auth";
+import { logout } from "@/lib/auth-actions";
 
-export function Header() {
-  const today = useMemo(
-    () =>
-      new Intl.DateTimeFormat("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      }).format(new Date()),
-    [],
-  );
+export async function Header() {
+  await connection();
+  const session = await getSession();
+  const today = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date());
 
   return (
     <header className="border-b border-slate-200 bg-white/90 backdrop-blur-sm">
@@ -27,7 +25,26 @@ export function Header() {
           <p className="text-sm text-slate-600">{today}</p>
         </div>
 
-        <NavLinks />
+        <div className="flex flex-wrap items-center gap-3">
+          <NavLinks />
+          {session ? (
+            <form action={logout}>
+              <button
+                type="submit"
+                className="rounded-full border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2"
+              >
+                Sign out
+              </button>
+            </form>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-full border border-emerald-700 px-3 py-2 text-sm font-medium text-emerald-700 transition-colors hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:ring-offset-2"
+            >
+              Sign in
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );

@@ -4,12 +4,20 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { getSession } from "@/lib/auth";
 import {
   addMeeting as addMeetingToDatabase,
   deleteMeeting as deleteMeetingFromDatabase,
   updateMeeting as updateMeetingInDatabase,
 } from "@/lib/meetings-db";
 import type { SacramentMeeting } from "@/lib/types";
+
+async function requireAuthenticatedUser(): Promise<void> {
+  const session = await getSession();
+  if (!session) {
+    redirect("/login");
+  }
+}
 
 const MeetingFormSchema = z.object({
   date: z.iso.date({ error: "Enter a valid meeting date." }),
@@ -142,6 +150,7 @@ export async function createMeeting(
   _previousState: MeetingFormState,
   formData: FormData,
 ): Promise<MeetingFormState> {
+  await requireAuthenticatedUser();
   const result = MeetingFormSchema.safeParse(getRawFormValues(formData));
 
   if (!result.success) {
@@ -167,6 +176,7 @@ export async function updateMeeting(
   _previousState: MeetingFormState,
   formData: FormData,
 ): Promise<MeetingFormState> {
+  await requireAuthenticatedUser();
   if (!Number.isSafeInteger(id) || id < 1) {
     return { message: "The meeting ID is invalid. Return to the meeting list." };
   }
@@ -198,6 +208,7 @@ export async function updateMeeting(
 }
 
 export async function deleteMeeting(formData: FormData): Promise<void> {
+  await requireAuthenticatedUser();
   const id = Number(formData.get("meetingId"));
   if (!Number.isSafeInteger(id) || id < 1) {
     throw new Error("The meeting ID is invalid.");

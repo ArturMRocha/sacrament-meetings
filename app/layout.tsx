@@ -19,8 +19,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sacrament Meeting Planner",
-  description: "Ward and stake meeting planner for Sunday meetings.",
+  metadataBase: new URL(
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000",
+  ),
+  title: {
+    default: "Sacrament Meeting Planner",
+    template: "%s | Sacrament Meeting Planner",
+  },
+  description: "Ward and stake meeting planner for Sunday sacrament meetings.",
+  openGraph: {
+    title: "Sacrament Meeting Planner",
+    description: "Ward and stake meeting planner for Sunday sacrament meetings.",
+    siteName: "Sacrament Meeting Planner",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
